@@ -1,16 +1,17 @@
-function XhrChannel(url) {
-    init(url)
+function XhrChannel(url, openedCallback) {
+    init(url, openedCallback)
 }
 
 Object.assign(XhrChannel.prototype, {
-    initChannel: function(url) {
+    initChannel: function(url, openedCallback) {
         this.url = url;
         this.messages = [];
         this.emptyResult = false;
         this.isTransmitting = false;
         this.count = 0;
 
-        this.startTransmitLoop()
+        this.startTransmitLoop();
+        openedCallback();
     },
 
     startTransmitLoop: function() {

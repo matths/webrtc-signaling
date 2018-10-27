@@ -10,6 +10,7 @@
         <script type="text/javascript" src="EventDispatcher.js"></script>
         <script type="text/javascript" src="Xhr.js"></script>
         <script type="text/javascript" src="XhrChannel.js"></script>
+        <script type="text/javascript" src="WsChannel.js"></script>
         <script type="text/javascript" src="SignalingChannel.js"></script>
 
     </head>
@@ -65,9 +66,15 @@ window.addEventListener("load", function (e) {
         // remoteVideo.src = window.URL.createObjectURL(remoteStream);
     };
 
-//    var url = 'https://192.168.178.81:8443/signaling/';
-    var url = 'https://'+window.location.host+'/signaling/';
-    var signalingChannel = SignalingChannel.getChannel(url, 'xhr');
+    var signalingChannelOpened = function() {
+        signalingChannel.send({"introduction": "noname"});
+    };
+
+    // var url = 'https://'+window.location.host+'/signaling/';
+    // var signalingChannel = SignalingChannel.getChannel(url, 'xhr', signalingChannelOpened);
+
+    var url = 'wss://'+window.location.host;
+    var signalingChannel = SignalingChannel.getChannel(url, 'ws', signalingChannelOpened);
 
     signalingChannel.addEventListener('sdp', function (e) {
         debug('sdp');
@@ -161,7 +168,6 @@ window.addEventListener("load", function (e) {
         localVideo.src="";
     }
 
-    signalingChannel.send({"introduction": "noname"});
 });
         </script>
     </body>

@@ -26,7 +26,7 @@ server.listen(8000);
 
 const signaling = require('./lib/signaling');
 signaling(server, {
-	xhr: true,
+	xhr: false,
 	ws: true
 });
 
