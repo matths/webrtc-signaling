@@ -25,9 +25,19 @@ var server = https.createServer(options, function (req, res) {
 server.listen(8000);
 
 const signaling = require('./lib/signaling');
-
 signaling(server, {
 	xhr: true,
 	ws: true
 });
 
+// const repl = require('repl');
+// const replServer = repl.start({
+// 	prompt: 'channel test >'
+// });
+
+// const channel = require('./lib/channel/channel');
+// const ch = channel.getWsChannel(server, function (sessionId, message) {
+// 	console.log("incoming");
+// 	ch.send(sessionId, '{"foo": "bar"}');
+// });
+// replServer.context.channel = ch;

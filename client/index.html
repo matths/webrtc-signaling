@@ -14,7 +14,7 @@
 
     </head>
     <body>
-        <ul id="peers">
+        <ul id="call-id-list">
         </ul>
         <script>
 
@@ -75,10 +75,11 @@ window.addEventListener("load", function (e) {
         var unsignedRemoteDescription = new RTCSessionDescription(e.sdp);
         if (e.sdp.type=='offer') {
             debug('OFFER');
+            var callId = e.from;
             //when somebody sends us an offer 
             peerConnection.setRemoteDescription(unsignedRemoteDescription, function () {
                 peerConnection.createAnswer(function (localDescription) {
-                    signalingChannel.sendLocalDescription(localDescription);
+                    signalingChannel.sendLocalDescription(callId, localDescription);
                     return peerConnection.setLocalDescription(localDescription);
                 }, function () {
                     debug('createAnswer ERROR', arguments);
@@ -102,18 +103,18 @@ window.addEventListener("load", function (e) {
 
     signalingChannel.addEventListener('message', function (e) {
         var message = e.message;
-        if (message.availablePeers != null) {
+        if (message.availableCallIds != null) {
             var html = "";
-            for (var i = 0; i<message.availablePeers.length; i++) {
-                var peer = message.availablePeers[i];
-                if (peer.self) {
-                    html += "<li><span data-id='"+peer.id+"'>"+peer.name+"</span></li>"
+            for (var i = 0; i<message.availableCallIds.length; i++) {
+                var availableCallId = message.availableCallIds[i];
+                if (availableCallId.self) {
+                    html += "<li><span data-call-id='"+availableCallId.callId+"'>"+availableCallId.name+"</span></li>"
                 } else {
-                    html += "<li><a data-id='"+peer.id+"' href='#'>"+peer.name+"</a></li>"
+                    html += "<li><a data-call-id='"+availableCallId.callId+"' href='#'>"+availableCallId.name+"</a></li>"
                 }
             }
-            var peersList = document.getElementById('peers');
-            peersList.innerHTML = html;
+            var callIdList = document.getElementById('call-id-list');
+            callIdList.innerHTML = html;
         }
     });
 
@@ -126,7 +127,7 @@ window.addEventListener("load", function (e) {
     // send any ice candidates to the other peer
     peerConnection.addEventListener('icecandidate', function (e) {
         debug('icecandidate');
-        signalingChannel.sendIceCandidate(e.candidate);
+        signalingChannel.sendIceCandidate(callId, e.candidate);
     });
 
     var constraints = {
@@ -137,14 +138,14 @@ window.addEventListener("load", function (e) {
         debug("getUserMedia error", err);
     });
 
-    var peersList = document.getElementById('peers');
-    peersList.addEventListener('click', function(e) {
+    var callIdList = document.getElementById('call-id-list');
+    callIdList.addEventListener('click', function(e) {
         e.preventDefault();
         if (e.target.nodeName.toLowerCase() == 'a') {
-            signalingChannel.send({"partner": e.target.dataset.id});
+            callId = e.target.dataset.callId;
             // call = offer
             peerConnection.createOffer(function (localDescription) {
-                signalingChannel.sendLocalDescription(localDescription);
+                signalingChannel.sendLocalDescription(callId, localDescription);
                 return peerConnection.setLocalDescription(localDescription);
             }, function () {
                 debug(arguments);

@@ -23,11 +23,17 @@ SignalingChannel.getChannel = function (url, type) {
 Object.assign(SignalingChannel.prototype, {
 
     // send ice candidate or sdp messages
-    sendIceCandidate: function(candidate) {
-        this.send({ "candidate": candidate });
+    sendIceCandidate: function(callId, candidate) {
+        this.send({
+            "to": callId,
+            "candidate": candidate
+        });
     },
-    sendLocalDescription: function(localDescription) {
-        this.send({ "sdp": localDescription });
+    sendLocalDescription: function(callId, localDescription) {
+        this.send({
+            "to": callId,
+            "sdp": localDescription
+        });
     },
 
     // receive ice candidate or sdp messages
@@ -35,20 +41,22 @@ Object.assign(SignalingChannel.prototype, {
         debug('initSignaling');
         this.addEventListener('message', function (e) {
             var message = e.message;
-            if (message.sdp != null) {
+            if (message.from != null && message.sdp != null) {
                 if (this.onSdp && typeof this.onSdp === 'function') {
-                    this.onSdp(message.sdp);
+                    this.onSdp(message.from, message.sdp);
                 }
                 this.dispatchEvent({
                     type: 'sdp',
+                    from: message.from,
                     sdp: message.sdp
                 });
-            } else if (message.candidate != null) {
+            } else if (message.from != null && message.candidate != null) {
                 if (this.onCandidate && typeof this.onCandidate === 'function') {
-                    this.onCandidate(message.candidate);
+                    this.onCandidate(message.from, message.candidate);
                 }
                 this.dispatchEvent({
                     type: 'candidate',
+                    from: message.from,
                     candidate: message.candidate
                 });
             }
