@@ -2,6 +2,8 @@ const https = require('https');
 const path = require('path');
 const fs = require('fs');
 
+const log = require('./lib/utils/log');
+
 const currentDir = path.dirname(fs.realpathSync(__filename));
 
 const serveStatic = require('serve-static');
@@ -9,7 +11,7 @@ const serveStaticFilesMiddleware = serveStatic(path.join(currentDir, 'client'), 
 	'index': ['index.html', 'index.htm']	
 });
 
-// to create self-signed certificate and key run `npm run-scripts create-ssl`
+// to create self-signed certificate and key run `npm run create-ssl`
 const key = fs.readFileSync(path.join(currentDir, 'ssl/private/server.key'));
 const cert = fs.readFileSync(path.join(currentDir, 'ssl/certs/server.crt'));
 const options = {
@@ -20,11 +22,16 @@ const options = {
 };
 
 var server = https.createServer(options, function (req, res) {
+	res.addListener('finish', function () {
+		log.write('serve-static', req.connection.remoteAddress, res.statusCode, req.url);
+	});
 	serveStaticFilesMiddleware(req, res, function (err) {
 		if (err) {
-			console.log(err);
+			log.write('serve-static', log.red+'error'+log.reset, err);
+			res.writeHead(500, {"Content-Type": "text/plain"});
+			res.write("500 Internal Server Error\n");
+			res.end();
 		} else {
-			console.log("fall-through for", req.url);
 			res.writeHead(404, {"Content-Type": "text/plain"});
 			res.write("404 Not Found\n");
 			res.end();
@@ -38,15 +45,3 @@ signaling(server, {
 	xhr: false,
 	ws: true
 });
-
-// const repl = require('repl');
-// const replServer = repl.start({
-// 	prompt: 'channel test >'
-// });
-
-// const channel = require('./lib/channel/channel');
-// const ch = channel.getWsChannel(server, function (sessionId, message) {
-// 	console.log("incoming");
-// 	ch.send(sessionId, '{"foo": "bar"}');
-// });
-// replServer.context.channel = ch;
