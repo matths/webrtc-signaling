@@ -1,0 +1,21 @@
+{
+  "name": "webrtc-signaling",
+  "version": "0.0.1",
+  "description": "a simple signaling server and client to run webrtc one2one video chat between recent chrome (also android chrome) browsers",
+  "repository": "https://github.com/matths/webrtc-signaling.git",
+  "main": "index.js",
+  "scripts": {
+    "create-ssl": "cd ssl && ./create.sh && cd ..",
+    "open-client": "opn https://127.0.0.1:8000",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Matthias Dittgen <dittgen@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "serve-static": "^1.13.1",
+    "ws": "^6.1.0"
+  },
+  "devDependencies": {
+    "opn-cli": "^3.1.0"
+  }
+}
