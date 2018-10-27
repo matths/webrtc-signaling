@@ -1,0 +1,17 @@
+video {
+	margin: 20px;
+}
+
+ul#call-id-list {
+	margin: 20px;
+}
+
+ul#call-id-list li{
+	font-weight: bold;
+	color: #333333;
+}
+
+ul#call-id-list li a {
+	color: #cc3333;
+	text-decoration: none;
+}
