@@ -45,15 +45,13 @@ window.addEventListener("load", function (e) {
         // remoteVideo.src = window.URL.createObjectURL(remoteStream);
     };
 
-    var signalingChannelOpened = function() {
+    var signalingChannelOpened = function(signalingChannel) {
         signalingChannel.send({"introduction": "noname"});
     };
 
-    // var url = 'https://'+window.location.host+'/signaling/';
-    // var signalingChannel = SignalingChannel.getChannel(url, 'xhr', signalingChannelOpened);
-
-    var url = 'wss://'+window.location.host;
-    var signalingChannel = SignalingChannel.getChannel(url, 'ws', signalingChannelOpened);
+    var host = window.location.host;
+    var type = 'xhr'; // 'ws';
+    var signalingChannel = SignalingChannel.getChannel(host, type, signalingChannelOpened);
 
     signalingChannel.addEventListener('sdp', function (e) {
         debug('sdp');

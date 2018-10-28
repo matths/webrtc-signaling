@@ -1,21 +1,21 @@
 function SignalingChannel() {
-    throw new Error('use SignalingChannel.getChannel(url, type) to create a signaling channel.');
+    throw new Error('use SignalingChannel.getChannel(host, type, openedCallback) to create a signaling channel.');
 }
 
-SignalingChannel.getChannel = function (url, type, openedCallback) {
+SignalingChannel.getChannel = function (host, type, openedCallback) {
     var capitalizedType = type.charAt(0).toUpperCase() + type.toLowerCase().slice(1);
     var knownChannels = ['Xhr', 'Ws'];
     if (knownChannels.indexOf(capitalizedType)!=-1) {
         var Channel = window[capitalizedType + 'Channel'];
         if (Channel) {
-            var TypedSignalingChannel = function(url, openedCallback) {
-                this.initChannel(url, openedCallback)
+            var TypedSignalingChannel = function(host, openedCallback) {
+                this.initChannel(host, openedCallback)
                 this.initSignaling()
             }
             TypedSignalingChannel.name = capitalizedType+'SignalingChannel';
             Object.assign(TypedSignalingChannel.prototype, SignalingChannel.prototype);
             Object.assign(TypedSignalingChannel.prototype, Channel.prototype);
-            return new TypedSignalingChannel(url, openedCallback);
+            return new TypedSignalingChannel(host, openedCallback);
         }
     }
 };

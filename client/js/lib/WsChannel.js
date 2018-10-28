@@ -1,10 +1,10 @@
-function WsChannel(url, openedCallback) {
-    init(url, openedCallback)
+function WsChannel(host, openedCallback) {
+    init(host, openedCallback)
 }
 
 Object.assign(WsChannel.prototype, {
-    initChannel: function(url, openedCallback) {
-        this.url = url;
+    initChannel: function(host, openedCallback) {
+        this.url = 'wss://' + host;
         this.ws = false;
         this.openedCallback = openedCallback;
 
@@ -25,7 +25,7 @@ Object.assign(WsChannel.prototype, {
 
     openHandler: function (e) {
         console.log('ws open', e);
-        this.openedCallback();
+        this.openedCallback(this);
     },
 
     closeHandler: function (e) {

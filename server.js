@@ -22,9 +22,14 @@ const options = {
 };
 
 var server = https.createServer(options, function (req, res) {
+	if (req.signaling) {
+		return;
+	}
+
 	res.addListener('finish', function () {
 		log.write('serve-static', req.connection.remoteAddress, res.statusCode, req.url);
 	});
+
 	serveStaticFilesMiddleware(req, res, function (err) {
 		if (err) {
 			log.write('serve-static', log.red+'error'+log.reset, err);
@@ -42,6 +47,6 @@ server.listen(8000);
 
 const signaling = require('./lib/signaling');
 signaling(server, {
-	xhr: false,
+	xhr: true,
 	ws: true
 });
