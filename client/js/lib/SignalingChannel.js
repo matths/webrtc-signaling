@@ -38,7 +38,6 @@ Object.assign(SignalingChannel.prototype, {
 
     // receive ice candidate or sdp messages
     initSignaling: function() {
-        debug('initSignaling');
         this.addEventListener('message', function (e) {
             var message = e.message;
             if (message.from != null && message.sdp != null) {
