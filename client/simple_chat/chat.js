@@ -25,6 +25,10 @@ function channelOpened (channel) {
         var div = document.createElement('div');
         div.innerHTML = '<span class="nickname">'+e.message.nickname+':</span> <span class="message">'+e.message.message+'</span>';
         messages.insertBefore(div, messages.firstChild);
+
+        while (messages.children.length > 20) {
+            messages.lastElementChild.remove();
+        }
     });
 };
 
