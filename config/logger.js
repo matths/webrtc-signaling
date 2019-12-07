@@ -1,7 +1,7 @@
 var exports = module.exports = loggers = [{
-	"name": "serve-static",
+	"name": "access",
 	"type": "file",
-	"file": "serve-static.log",
+	"file": "access.log",
 	"addDatetime": true,
 	"addName": false
 }, {
