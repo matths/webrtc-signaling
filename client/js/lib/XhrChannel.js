@@ -1,5 +1,5 @@
 function XhrChannel(host, openedCallback) {
-    init(host, openedCallback)
+    this.initChannel(host, openedCallback);
 }
 
 Object.assign(XhrChannel.prototype, {

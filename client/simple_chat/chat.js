@@ -1,33 +1,33 @@
-var signalingChannelOpened = function(signalingChannel) {
-};
 
 const nickname = document.getElementById('nickname');
-nickname.addEventListener('keyup', function (e) {
+const message = document.getElementById('message');
+const messages = document.getElementById('messages');
+const sendBtn = document.getElementById('send');
+
+function sendMessage () {
+    if (!message.value) return;
+    channel.send({
+        type: 'chat',
+        nickname: nickname.value?nickname.value:'anonymous',
+        message: message.value
+    });
+};
+
+sendBtn.addEventListener('click', sendMessage);
+message.addEventListener('keyup', function (e) {
     if (e.keyCode === 13) {
-        const val = nickname.value;
-        if (val!='') {
-            signalingChannel.send({'introduction': val});
-        }
+        sendMessage();
     }
 });
+
+function channelOpened (channel) {
+    channel.addEventListener('message', function (e) {
+        var div = document.createElement('div');
+        div.innerHTML = '<span class="nickname">'+e.message.nickname+':</span> <span class="message">'+e.message.message+'</span>';
+        messages.insertBefore(div, messages.firstChild);
+    });
+};
 
 var host = window.location.host;
-var type = 'xhr'; // 'ws';
-var signalingChannel = SignalingChannel.getChannel(host, type, signalingChannelOpened);
-
-signalingChannel.addEventListener('message', function (e) {
-    var message = e.message;
-    if (message.availableCallIds != null) {
-        var html = "";
-        for (var i = 0; i<message.availableCallIds.length; i++) {
-            var availableCallId = message.availableCallIds[i];
-            if (availableCallId.self) {
-                html += "<li><span data-call-id='"+availableCallId.callId+"'>"+availableCallId.name+"</span></li>"
-            } else {
-                html += "<li><a data-call-id='"+availableCallId.callId+"' href='#'>"+availableCallId.name+"</a></li>"
-            }
-        }
-        var callIdList = document.getElementById('call-id-list');
-        callIdList.innerHTML = html;
-    }
-});
+//var channel = new XhrChannel(host, channelOpened);
+var channel = new WsChannel(host, channelOpened);

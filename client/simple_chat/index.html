@@ -7,16 +7,12 @@
         <script type="text/javascript" src="../js/lib/Xhr.js"></script>
         <script type="text/javascript" src="../js/lib/XhrChannel.js"></script>
         <script type="text/javascript" src="../js/lib/WsChannel.js"></script>
-        <script type="text/javascript" src="../js/lib/SignalingChannel.js"></script>
-        <style type="text/css">
-#nickname {
-    width: 200px;
-}
-        </style>
     </head>
     <body>
-        <input id="nickname" placeholder="enter your nickname here to start" name="nickname" value="">
-        <ul id="call-id-list"></ul>
+        <input id="nickname" placeholder="your nickname" name="nickname" value="">
+        <input id="message" placeholder="your message" name="message" value="">
+        <button id="send">send</button>
+        <div id="messages"></div>
         <script type="text/javascript" src="chat.js"></script>
     </body>
 </html>
