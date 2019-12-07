@@ -1,12 +1,12 @@
 const https = require('https');
 const path = require('path');
 const fs = require('fs');
-
+const serveStatic = require('serve-static');
 const log = require('./lib/utils/log');
+const signaling = require('./lib/signaling');
 
 const currentDir = path.dirname(fs.realpathSync(__filename));
 
-const serveStatic = require('serve-static');
 const serveStaticFilesMiddleware = serveStatic(path.join(currentDir, 'client'), {
 	'index': ['index.html', 'index.htm']	
 });
@@ -23,11 +23,12 @@ const options = {
 
 var server = https.createServer(options, function (req, res) {
 	if (req.signaling) {
-		return;
+		return; // ignore all signaling requests
 	}
 
 	res.addListener('finish', function () {
-		log.write('serve-static', req.connection.remoteAddress, res.statusCode, req.url);
+		const ip = req.connection.remoteAddress?req.connection.remoteAddress:'0.0.0.0';
+		log.write('access', ip, res.statusCode, req.url);
 	});
 
 	serveStaticFilesMiddleware(req, res, function (err) {
@@ -43,9 +44,8 @@ var server = https.createServer(options, function (req, res) {
 		}
 	});
 });
-server.listen(8000);
+server.listen(8000, '0.0.0.0');
 
-const signaling = require('./lib/signaling');
 signaling(server, {
 	xhr: true,
 	ws: true
