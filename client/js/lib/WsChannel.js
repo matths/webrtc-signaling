@@ -25,7 +25,7 @@ Object.assign(WsChannel.prototype, {
 
     openHandler: function (e) {
         console.log('ws open', e);
-        this.send({});
+//        this.send({});
         this.openedCallback(this);
     },
 
