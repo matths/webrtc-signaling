@@ -22,10 +22,6 @@ const options = {
 };
 
 var server = https.createServer(options, function (req, res) {
-	if (req.signaling) {
-		return; // ignore all signaling requests
-	}
-
 	res.addListener('finish', function () {
 		const ip = req.connection.remoteAddress?req.connection.remoteAddress:'0.0.0.0';
 		log.write('access', ip, res.statusCode, req.url);
