@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "create-ssl": "cd ssl && ./create.sh && cd ..",
+    "run-server": "node server.js",
     "open-client": "opn https://127.0.0.1:8000",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
