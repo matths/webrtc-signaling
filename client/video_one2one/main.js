@@ -18,6 +18,7 @@ window.addEventListener("load", function (e) {
 
     var width = 400;
     var height = 300;
+    var callId;
 
     var body = document.getElementsByTagName('body')[0];
     var localVideo = createVideoElement(body, width, height, true);
