@@ -13,7 +13,8 @@ var exports = module.exports = knownDevices = [{
 	"macAddress": "d0:f8:8c:ee:ce:af",
 	"ipv4": "192.168.178.81",
 	"ipv6": "fe80:1c19:7342:6b4f:b032"
-}];
+},
+];
 
 // }, {
 // 	"name": "local",
