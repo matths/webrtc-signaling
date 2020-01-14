@@ -27,7 +27,18 @@ function xhr(url, data, callback) {
     });
     request.open('POST', url, true);
     request.setRequestHeader("Content-type", "application/json; charset=utf-8");
+    if (!window.name) {
+        window.name = randomId();
+    }
+    request.setRequestHeader("X-Window-Name", window.name);
+    request.withCredentials = true;
     request.timeout = 4000; // Set timeout to 4 seconds (4000 milliseconds)
     request.send(JSON.stringify(data));
     return request;
+}
+
+function randomId() {
+    var x = 2147483648;
+    return Math.floor(Math.random() * x).toString(36) +
+    Math.abs(Math.floor(Math.random() * x) ^ Date.now()).toString(36);
 }
