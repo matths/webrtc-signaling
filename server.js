@@ -3,7 +3,9 @@ const path = require('path');
 const fs = require('fs');
 const serveStatic = require('serve-static');
 const log = require('./lib/utils/log');
-const signaling = require('./lib/signaling');
+const Signaling = require('./lib/Signaling');
+const webrtcHandshake = require('./webrtcHandshake');
+const echoChat = require('./echoChat');
 
 const currentDir = path.dirname(fs.realpathSync(__filename));
 
@@ -42,7 +44,11 @@ var server = https.createServer(options, function (req, res) {
 });
 server.listen(8000, '0.0.0.0');
 
-signaling(server, {
+var signaling = new Signaling(server, {
 	xhr: true,
+	jsonp: true,
 	ws: true
 });
+
+echoChat(signaling);
+webrtcHandshake(signaling);
