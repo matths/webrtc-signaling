@@ -1,4 +1,5 @@
 const connections = require('./lib/connection/connections');
+const uniqueId = require('./lib/utils/uniqueId');
 let signaling;
 
 function webrtcHandshake(_signaling) {
