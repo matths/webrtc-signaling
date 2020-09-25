@@ -4,7 +4,7 @@ function SignalingChannel() {
 
 SignalingChannel.getChannel = function (host, type, openedCallback) {
     var capitalizedType = type.charAt(0).toUpperCase() + type.toLowerCase().slice(1);
-    var knownChannels = ['Xhr', 'Ws'];
+    var knownChannels = ['Xhr', 'Ws', 'Jsonp'];
     if (knownChannels.indexOf(capitalizedType)!=-1) {
         var Channel = window[capitalizedType + 'Channel'];
         if (Channel) {

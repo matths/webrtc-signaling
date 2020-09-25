@@ -51,7 +51,7 @@ window.addEventListener("load", function (e) {
     };
 
     var host = window.location.host;
-    var type = 'xhr'; // 'ws';
+    var type = 'ws'; //'ws', 'xhr', 'jsonp'
     var signalingChannel = SignalingChannel.getChannel(host, type, signalingChannelOpened);
 
     signalingChannel.addEventListener('sdp', function (e) {
