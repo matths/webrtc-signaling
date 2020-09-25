@@ -47,7 +47,7 @@ window.addEventListener("load", function (e) {
     };
 
     var signalingChannelOpened = function(signalingChannel) {
-        signalingChannel.send({"introduction": "noname"});
+        signalingChannel.send({"introduction": "noname"+Date.now()});
     };
 
     var host = window.location.host;
