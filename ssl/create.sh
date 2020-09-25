@@ -8,7 +8,7 @@ COUNTRY="DE"
 STATE="Germany"
 LOCALITY="Berlin"
 ORGANIZATION="Self Sign Inc."
-COMMON_NAME="127.0.0.1"
+COMMON_NAME="192.168.178.55" # hugo
 
 # read -s -p "Enter Password: " PASSWD
 PASSWD="secret"
