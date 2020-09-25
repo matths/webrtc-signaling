@@ -4,15 +4,53 @@
         <meta charset="utf-8">
         <title>simple chat</title>
         <script type="text/javascript" src="../js/lib/EventDispatcher.js"></script>
+        <script type="text/javascript" src="../js/lib/SignalingChannel.js"></script>
+        <script type="text/javascript" src="../js/lib/WsChannel.js"></script>
         <script type="text/javascript" src="../js/lib/Xhr.js"></script>
         <script type="text/javascript" src="../js/lib/XhrChannel.js"></script>
-        <script type="text/javascript" src="../js/lib/WsChannel.js"></script>
+        <script type="text/javascript" src="../js/lib/JsonCrush.js"></script>
+        <script type="text/javascript" src="../js/lib/Jsonp.js"></script>
+        <script type="text/javascript" src="../js/lib/JsonpChannel.js"></script>
+        <style>
+            html, body {
+                font-family: sans-serif;
+            }
+            input, select, button, #messages {
+                display: block;
+                margin: 10px;
+                width: 200px;
+                height: 35px;
+                padding: 1px 5px;
+                box-sizing: border-box;
+            }
+            #message, #messages {
+                width: 400px;
+            }
+            #messages {
+                border: 1px solid gray;
+                height: 100px;
+                overflow-y: scroll;
+            }
+        </style>
     </head>
     <body>
-        <input id="nickname" placeholder="your nickname" name="nickname" value="">
-        <input id="message" placeholder="your message" name="message" value="">
-        <button id="send">send</button>
-        <div id="messages"></div>
+        <h1>Echo</h1>
+        <section>
+            <h2>Channel</h2>
+            <input id="nickname" placeholder="your nickname" name="nickname" value="">
+            <select id="channel">
+                <option value="xhr">Ajax/XmlHttpRequest</option>
+                <option value="jsonp">JsonP</option>
+                <option value="ws">Websocket</option>
+            </select>
+            <button id="start">start</button>
+        </section>
+        <section>
+            <h2>Chat</h2>
+            <div id="messages"></div>
+            <input id="message" placeholder="your message" name="message" value="" disabled>
+            <button id="send" disabled>send</button>
+            </section>
         <script type="text/javascript" src="chat.js"></script>
     </body>
 </html>
